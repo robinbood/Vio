@@ -1,26 +1,145 @@
 @import "tailwindcss";
+@import "tw-animate-css";
+
+@custom-variant dark (&:where(.dark, .dark *));
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --background: oklch(1 0 0);
+  --foreground: oklch(0.18 0.02 280);
+  --card: oklch(1 0 0);
+  --card-foreground: oklch(0.18 0.02 280);
+  --popover: oklch(1 0 0);
+  --popover-foreground: oklch(0.18 0.02 280);
+  --primary: oklch(0.5 0.22 281);
+  --primary-foreground: oklch(0.98 0 0);
+  --secondary: oklch(0.96 0.01 280);
+  --secondary-foreground: oklch(0.18 0.02 280);
+  --muted: oklch(0.96 0.01 280);
+  --muted-foreground: oklch(0.5 0.02 280);
+  --accent: oklch(0.94 0.03 280);
+  --accent-foreground: oklch(0.18 0.02 280);
+  --destructive: oklch(0.6 0.22 25);
+  --destructive-foreground: oklch(0.98 0 0);
+  --success: oklch(0.7 0.18 145);
+  --warning: oklch(0.8 0.17 80);
+  --border: oklch(0.9 0.01 280);
+  --input: oklch(0.9 0.01 280);
+  --ring: oklch(0.5 0.22 281);
+  --radius: 0.5rem;
+  --vio-violet: #6d28d9;
+  --vio-violet-hover: #5b21b6;
+  --vio-indigo: #4338ca;
+  /* Label palette — exact Trello hexes (per AGENTS.md §7) */
+  --label-yellow: #f2d600;
+  --label-purple: #c377e0;
+  --label-orange: #ffab4a;
+  --label-red: #eb5a46;
+  --label-green: #61bd4f;
+  --label-blue: #0079bf;
+  --label-lime: #51e898;
+  --label-sky: #00c2e0;
+  --label-pink: #ff80ce;
+  --label-black: #4d4d4d;
+}
+
+.dark {
+  --background: oklch(0.18 0.02 280);
+  --foreground: oklch(0.95 0.01 280);
+  --card: oklch(0.22 0.02 280);
+  --card-foreground: oklch(0.95 0.01 280);
+  --popover: oklch(0.22 0.02 280);
+  --popover-foreground: oklch(0.95 0.01 280);
+  --primary: oklch(0.65 0.21 281);
+  --primary-foreground: oklch(0.98 0 0);
+  --secondary: oklch(0.28 0.02 280);
+  --secondary-foreground: oklch(0.95 0.01 280);
+  --muted: oklch(0.28 0.02 280);
+  --muted-foreground: oklch(0.65 0.02 280);
+  --accent: oklch(0.3 0.04 280);
+  --accent-foreground: oklch(0.95 0.01 280);
+  --destructive: oklch(0.55 0.22 25);
+  --destructive-foreground: oklch(0.98 0 0);
+  --border: oklch(0.3 0.02 280);
+  --input: oklch(0.3 0.02 280);
+  --ring: oklch(0.65 0.21 281);
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-success: var(--success);
+  --color-warning: var(--warning);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --color-vio: var(--vio-violet);
+  --color-vio-hover: var(--vio-violet-hover);
+  --color-vio-indigo: var(--vio-indigo);
+  --color-label-yellow: var(--label-yellow);
+  --color-label-purple: var(--label-purple);
+  --color-label-orange: var(--label-orange);
+  --color-label-red: var(--label-red);
+  --color-label-green: var(--label-green);
+  --color-label-blue: var(--label-blue);
+  --color-label-lime: var(--label-lime);
+  --color-label-sky: var(--label-sky);
+  --color-label-pink: var(--label-pink);
+  --color-label-black: var(--label-black);
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+@layer base {
+  * {
+    border-color: var(--border);
+  }
+  html,
+  body {
+    height: 100%;
+  }
+  body {
+    background-color: var(--background);
+    color: var(--foreground);
+    font-feature-settings: "rlig" 1, "calt" 1;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+  button {
+    cursor: pointer;
+  }
+  :focus-visible {
+    outline: 2px solid var(--ring);
+    outline-offset: 2px;
   }
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+@layer utilities {
+  .scrollbar-thin {
+    scrollbar-width: thin;
+    scrollbar-color: var(--border) transparent;
+  }
+  .scrollbar-thin::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+  }
+  .scrollbar-thin::-webkit-scrollbar-thumb {
+    background-color: var(--border);
+    border-radius: 4px;
+  }
 }
