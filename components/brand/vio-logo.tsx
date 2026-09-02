@@ -1,38 +1,82 @@
 import { cn } from "@/lib/utils/cn";
 
-export function VioLogo({ className }: { className?: string }) {
+type VioLogoProps = {
+  className?: string;
+  /** "default" = full color gradient. "mono" = currentColor for use on colored backgrounds. */
+  variant?: "default" | "mono";
+  /** Whether to render the wordmark alongside the mark. */
+  withWordmark?: boolean;
+};
+
+export function VioLogo({
+  className,
+  variant = "default",
+  withWordmark = false,
+}: VioLogoProps) {
+  const gradId = variant === "default" ? "vio-logo-gradient" : "vio-logo-gradient-mono";
+
   return (
-    <svg
-      className={cn("text-current", className)}
-      viewBox="0 0 32 32"
-      fill="none"
-      xmlns="http://www.w3.org/2000/svg"
-      role="img"
-      aria-label="Vio"
+    <span
+      className={cn("inline-flex items-center gap-2 leading-none", className)}
     >
-      <defs>
-        <linearGradient id="vioGradient" x1="0" y1="0" x2="32" y2="32" gradientUnits="userSpaceOnUse">
-          <stop offset="0" stopColor="#8b5cf6" />
-          <stop offset="1" stopColor="#4338ca" />
-        </linearGradient>
-      </defs>
-      <rect width="32" height="32" rx="7" fill="url(#vioGradient)" />
-      {/* Two stacked boards/cards forming a V */}
-      <path
-        d="M7 9.5C7 8.67 7.67 8 8.5 8H11C11.55 8 12 8.45 12 9V22.5C12 23.33 11.33 24 10.5 24H8.5C7.67 24 7 23.33 7 22.5V9.5Z"
-        fill="white"
-        fillOpacity="0.95"
-      />
-      <path
-        d="M14 12.5C14 11.67 14.67 11 15.5 11H18C18.55 11 19 11.45 19 12V22.5C19 23.33 18.33 24 17.5 24H15.5C14.67 24 14 23.33 14 22.5V12.5Z"
-        fill="white"
-        fillOpacity="0.7"
-      />
-      {/* Forward chevron in the V */}
-      <path
-        d="M21 14L25 17L21 20V14Z"
-        fill="white"
-      />
-    </svg>
+      <svg
+        viewBox="0 0 40 40"
+        fill="none"
+        xmlns="http://www.w3.org/2000/svg"
+        role="img"
+        aria-label="Vio"
+        className="shrink-0"
+        style={{ height: "1em", width: "1em" }}
+      >
+        <defs>
+          <linearGradient
+            id="vio-logo-gradient"
+            x1="4"
+            y1="6"
+            x2="36"
+            y2="34"
+            gradientUnits="userSpaceOnUse"
+          >
+            <stop offset="0" stopColor="#ec4899" />
+            <stop offset="0.45" stopColor="#8b5cf6" />
+            <stop offset="1" stopColor="#6366f1" />
+          </linearGradient>
+          <linearGradient
+            id="vio-logo-gradient-mono"
+            x1="4"
+            y1="6"
+            x2="36"
+            y2="34"
+            gradientUnits="userSpaceOnUse"
+          >
+            <stop offset="0" stopColor="currentColor" />
+            <stop offset="1" stopColor="currentColor" />
+          </linearGradient>
+        </defs>
+        {/* Soft rounded square backdrop */}
+        <rect width="40" height="40" rx="10" fill={`url(#${gradId})`} />
+        {/* The "V" — two rounded chevrons, top-aligned, with a notch */}
+        <path
+          d="M11.5 13.5 L20 27 L28.5 13.5"
+          stroke="white"
+          strokeWidth="3.25"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          fill="none"
+        />
+        {/* The spark — a small 4-point star sitting in the V's valley */}
+        <path
+          d="M20 30.5 L20.85 32.15 L22.5 33 L20.85 33.85 L20 35.5 L19.15 33.85 L17.5 33 L19.15 32.15 Z"
+          fill="white"
+        />
+        {/* Tiny cyan accent dot above the spark for vibrancy */}
+        {variant === "default" && (
+          <circle cx="29.5" cy="11" r="1.5" fill="#22d3ee" />
+        )}
+      </svg>
+      {withWordmark && (
+        <span className="font-semibold tracking-tight">Vio</span>
+      )}
+    </span>
   );
 }
