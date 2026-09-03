@@ -1,6 +1,7 @@
 import { NextResponse, type NextRequest } from "next/server";
 
-const SESSION_COOKIE_RE = /(^|;\s*)(?:vio|trello)\.session=|(^|;\s*)(?:vio|trello)\.session_token=/;
+const SESSION_COOKIE_RE =
+  /(^|;\s*)(?:vio|trello)\.session=|(^|;\s*)(?:vio|trello)\.session_token=/;
 
 const PUBLIC_PATHS = [
   "/login",
@@ -9,12 +10,23 @@ const PUBLIC_PATHS = [
   "/reset-password",
   "/two-factor",
   "/api/auth",
-  "/_next",
   "/favicon.ico",
   "/sw.js",
 ];
 
-const PROTECTED_PREFIXES = ["/boards", "/u", "/notifications", "/settings", "/billing", "/help", "/workspaces", "/templates", "/members", "/power-ups", "/cards"];
+const PROTECTED_PREFIXES = [
+  "/boards",
+  "/u",
+  "/notifications",
+  "/settings",
+  "/billing",
+  "/help",
+  "/workspaces",
+  "/templates",
+  "/members",
+  "/power-ups",
+  "/cards",
+];
 
 function isPublic(pathname: string): boolean {
   return PUBLIC_PATHS.some(
@@ -34,7 +46,15 @@ export function proxy(request: NextRequest) {
   const hasSession = SESSION_COOKIE_RE.test(cookieHeader);
 
   // Auth pages: bounce signed-in users to /boards
-  if (hasSession && (pathname === "/login" || pathname === "/signup" || pathname === "/")) {
+  if (
+    hasSession &&
+    (pathname === "/login" ||
+      pathname === "/signup" ||
+      pathname === "/forgot-password" ||
+      pathname === "/reset-password" ||
+      pathname === "/two-factor" ||
+      pathname === "/")
+  ) {
     const url = request.nextUrl.clone();
     url.pathname = "/boards";
     url.search = "";
@@ -55,6 +75,8 @@ export function proxy(request: NextRequest) {
 export const config = {
   matcher: [
     // Run on everything except static assets and the public file system.
-    "/((?!_next/static|_next/image|favicon.ico|.*\\.(?:svg|png|jpg|jpeg|gif|webp|ico)$).*)",
+    // _next/* and favicon/image extensions are already excluded by the
+    // matcher, so the function body never has to special-case them.
+    "/((?!_next/static|_next/image|favicon.ico|sw.js|.*\\.(?:svg|png|jpg|jpeg|gif|webp|ico)$).*)",
   ],
 };
