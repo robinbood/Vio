@@ -17,5 +17,5 @@ export const {
   signOut,
   useSession,
   getSession,
-  twoFactor,
+  twoFactor, 
 } = authClient;
