@@ -16,9 +16,6 @@ export const auth = betterAuth({
   appName: BRAND.auth.appName,
   baseURL,
   secret,
-  account: {
-    identityStrategy: "provider-id",
-  },
   database: drizzleAdapter(db, {
     provider: "pg",
     schema: {
