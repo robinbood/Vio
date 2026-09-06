@@ -8,31 +8,39 @@ import { toast } from "sonner";
 
 type Provider = "google" | "microsoft" | "apple" | "slack";
 
-const PROVIDERS: { id: Provider; label: string; src: string }[] = [
+const PROVIDERS: { id: Provider; label: string; src: string; envKey: string }[] = [
   {
     id: "google",
     label: "Google",
     src: "https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg",
+    envKey: "NEXT_PUBLIC_GOOGLE_CLIENT_ID",
   },
   {
     id: "microsoft",
     label: "Microsoft",
     src: "https://upload.wikimedia.org/wikipedia/commons/4/44/Microsoft_logo.svg",
+    envKey: "NEXT_PUBLIC_MICROSOFT_CLIENT_ID",
   },
   {
     id: "apple",
     label: "Apple",
     src: "https://upload.wikimedia.org/wikipedia/commons/f/fa/Apple_logo_black.svg",
+    envKey: "NEXT_PUBLIC_APPLE_CLIENT_ID",
   },
   {
     id: "slack",
     label: "Slack",
     src: "https://a.slack-edge.com/80588/marketing/img/meta/slack_hash_256.png",
+    envKey: "NEXT_PUBLIC_SLACK_CLIENT_ID",
   },
 ];
 
+const enabledProviders = PROVIDERS.filter((p) => typeof process !== "undefined" && !!process.env[p.envKey]);
+
 export function SsoButtons() {
   const [pending, setPending] = useState<Provider | null>(null);
+
+  if (enabledProviders.length === 0) return null;
 
   async function signInWith(provider: Provider) {
     setPending(provider);
@@ -52,7 +60,7 @@ export function SsoButtons() {
   return (
     <div className="space-y-3">
       <div className="grid grid-cols-2 gap-2">
-        {PROVIDERS.map((p) => (
+        {enabledProviders.map((p) => (
           <Button
             key={p.id}
             type="button"

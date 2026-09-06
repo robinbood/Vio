@@ -78,9 +78,6 @@ function SiteHeader() {
           <Button asChild variant="ghost" size="sm" className="hidden sm:inline-flex">
             <Link href="#features">Features</Link>
           </Button>
-          <Button asChild variant="ghost" size="sm" className="hidden sm:inline-flex">
-            <Link href="#pricing">Pricing</Link>
-          </Button>
           <Button asChild variant="ghost" size="sm">
             <Link href="/login">Log in</Link>
           </Button>
@@ -271,7 +268,7 @@ function FeatureGrid() {
 
 function FinalCta() {
   return (
-    <section id="pricing" className="mx-auto w-full max-w-7xl px-4 pb-24 sm:px-6 lg:px-8">
+    <section id="cta" className="mx-auto w-full max-w-7xl px-4 pb-24 sm:px-6 lg:px-8">
       <div
         className={`relative overflow-hidden rounded-3xl ${BRAND_GRADIENT} p-10 text-center text-white shadow-2xl shadow-violet-500/30 sm:p-16`}
       >
@@ -331,8 +328,8 @@ function SiteFooter() {
           <Link href="#features" className="hover:text-foreground">
             Features
           </Link>
-          <Link href="#pricing" className="hover:text-foreground">
-            Pricing
+          <Link href="/privacy" className="hover:text-foreground">
+            Privacy
           </Link>
           <Link href="/login" className="hover:text-foreground">
             Log in
