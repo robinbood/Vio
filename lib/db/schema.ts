@@ -221,6 +221,7 @@ export const user = pgTable(
     plan: planEnum("plan").notNull().default("free"),
     totpSecret: text("totp_secret"),
     totpEnabled: boolean("totp_enabled").notNull().default(false),
+    twoFactorEnabled: boolean("two_factor_enabled").notNull().default(false),
   },
   (t) => ({
     usernameIdx: uniqueIndex("user_username_idx").on(t.username),

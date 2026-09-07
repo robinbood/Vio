@@ -18,6 +18,8 @@ export const LABEL_COLORS = {
 
 export type LabelColorName = keyof typeof LABEL_COLORS;
 
+export type BoardBg = (typeof BOARD_BACKGROUNDS)[number];
+
 export const LABEL_COLOR_NAMES: LabelColorName[] = [
   "yellow",
   "purple",
@@ -47,4 +49,41 @@ export const BOARD_BACKGROUNDS = [
   { type: "gradient", value: "linear-gradient(135deg,#0079bf,#519839)", name: "Blue-Green" },
   { type: "gradient", value: "linear-gradient(135deg,#b04632,#89609e)", name: "Red-Purple" },
   { type: "gradient", value: "linear-gradient(135deg,#d29034,#b04632)", name: "Sunset" },
+  // GTA-style: dark urban, neon synthwave, high contrast
+  {
+    type: "gradient",
+    value:
+      "linear-gradient(160deg,#0a0a1a 0%,#1a0b2e 45%,#2d1b4d 100%)",
+    name: "Night Drive",
+  },
+  {
+    type: "gradient",
+    value:
+      "linear-gradient(135deg,#0d1b2a 0%,#1b2838 50%,#415a77 100%)",
+    name: "Downtown",
+  },
+  {
+    type: "gradient",
+    value:
+      "linear-gradient(135deg,#1a0035 0%,#3d0066 50%,#ff2d95 100%)",
+    name: "Neon Rouge",
+  },
+  {
+    type: "gradient",
+    value:
+      "linear-gradient(135deg,#001f3f 0%,#003366 50%,#00b4d8 100%)",
+    name: "Cyan Heist",
+  },
+  {
+    type: "gradient",
+    value:
+      "linear-gradient(135deg,#0f0f0f 0%,#1f1f1f 50%,#00ffea 100%)",
+    name: "Gridlock",
+  },
+  {
+    type: "gradient",
+    value:
+      "linear-gradient(160deg,#1a0010 0%,#33001a 50%,#ff5e62 100%)",
+    name: "Redline",
+  },
 ] as const;

@@ -53,14 +53,19 @@ export function SignUpForm() {
       }
       // Persist optional profile fields. We declared them in additionalFields.
       if (values.username) {
-        await authClient.updateUser({
-          // @ts-expect-error username is in additionalFields
-          username: values.username,
-        });
+        // Session cookie may not be on the client yet right after sign-up;
+        // failure here is non-fatal — the account is created and the user
+        // can set the username later in account settings.
+        try {
+          await authClient.updateUser({
+            // @ts-expect-error username is in additionalFields
+            username: values.username,
+          });
+        } catch {
+          // ignore
+        }
       }
       toast.success("Welcome to Vio");
-      router.push("/boards");
-      router.refresh();
     } finally {
       setSubmitting(false);
     }

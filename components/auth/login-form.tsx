@@ -54,8 +54,6 @@ export function LoginForm() {
         return;
       }
       toast.success("Welcome back");
-      router.push(callbackURL);
-      router.refresh();
     } finally {
       setSubmitting(false);
     }

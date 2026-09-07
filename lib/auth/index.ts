@@ -1,6 +1,7 @@
 import { betterAuth } from "better-auth";
 import { drizzleAdapter } from "better-auth/adapters/drizzle";
 import { nextCookies } from "better-auth/next-js";
+import { twoFactor } from "better-auth/plugins/two-factor";
 import { db } from "@/lib/db";
 import { BRAND } from "@/lib/brand";
 import * as schema from "@/lib/db/schema";
@@ -28,7 +29,7 @@ export const auth = betterAuth({
   emailAndPassword: {
     enabled: true,
     autoSignIn: true,
-    requireEmailVerification: false,
+    requireEmailVerification: process.env.NODE_ENV !== "production",
     minPasswordLength: 8,
     maxPasswordLength: 128,
   },
@@ -83,8 +84,9 @@ export const auth = betterAuth({
   },
   advanced: {
     cookiePrefix: BRAND.cookiePrefix,
+    trustedOrigins: baseURL ? [baseURL] : undefined,
   },
-  plugins: [nextCookies()],
+  plugins: [twoFactor(), nextCookies()],
 });
 
 export type Session = typeof auth.$Infer.Session;

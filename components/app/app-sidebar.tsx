@@ -18,13 +18,11 @@ import { Button } from "@/components/ui/button";
 
 const HOME_LINKS = [
   { href: "/boards", label: "Home", icon: Home, exact: true },
+  { href: "/workspaces", label: "Workspaces", icon: Building2, exact: true },
   { href: "/notifications", label: "Notifications", icon: Clock, exact: false },
 ];
 
-const WORKSPACE_HEADERS = [
-  { id: "personal", name: "Personal", boards: 0 },
-  { id: "team", name: "Team workspace", boards: 0 },
-];
+const WORKSPACE_HEADERS: { id: string; name: string; boards: number }[] = [];
 
 const DISCOVERY = [
   { href: "/templates", label: "Templates", icon: BookOpen },
