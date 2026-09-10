@@ -13,9 +13,11 @@ const secret =
 
 const baseURL = process.env.BETTER_AUTH_URL ?? process.env.NEXT_PUBLIC_APP_URL;
 
+// Support both production and preview Vercel URLs
+const vercelWildcard = "https://*.vercel.app";
 const trustedOrigins = baseURL
-  ? [baseURL, "https://vio-azure.vercel.app"]
-  : ["https://vio-azure.vercel.app"];
+  ? [baseURL, "https://vio-azure.vercel.app", vercelWildcard]
+  : ["https://vio-azure.vercel.app", vercelWildcard];
 
 export const auth = betterAuth({
   appName: BRAND.auth.appName,
@@ -89,6 +91,7 @@ export const auth = betterAuth({
   advanced: {
     cookiePrefix: BRAND.cookiePrefix,
     trustedOrigins,
+    trustedProxyHeaders: true,
   },
   plugins: [twoFactor(), nextCookies()],
 });
