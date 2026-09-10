@@ -11,13 +11,16 @@ const secret =
   process.env.AUTH_SECRET ??
   "dev-secret-please-change-in-production-min-32-chars";
 
-const baseURL = process.env.BETTER_AUTH_URL ?? process.env.NEXT_PUBLIC_APP_URL;
+// Dynamic baseURL config for Vercel (supports production + preview URLs)
+const baseURL = process.env.NODE_ENV === "production"
+  ? {
+      protocol: "https",
+      allowedHosts: ["*.vercel.app"],
+      fallback: "https://vio-azure.vercel.app",
+    }
+  : process.env.BETTER_AUTH_URL ?? process.env.NEXT_PUBLIC_APP_URL;
 
-// Support both production and preview Vercel URLs
-const vercelWildcard = "https://*.vercel.app";
-const trustedOrigins = baseURL
-  ? [baseURL, "https://vio-azure.vercel.app", vercelWildcard]
-  : ["https://vio-azure.vercel.app", vercelWildcard];
+const trustedOrigins = ["https://vio-azure.vercel.app", "https://*.vercel.app"];
 
 export const auth = betterAuth({
   appName: BRAND.auth.appName,
