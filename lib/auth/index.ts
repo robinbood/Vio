@@ -84,7 +84,7 @@ export const auth = betterAuth({
   },
   advanced: {
     cookiePrefix: BRAND.cookiePrefix,
-    trustedOrigins: baseURL ? [baseURL] : undefined,
+    trustedOrigins: baseURL ? [baseURL, "https://vio-azure.vercel.app"] : undefined,
   },
   plugins: [twoFactor(), nextCookies()],
 });
