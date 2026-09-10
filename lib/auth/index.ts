@@ -14,7 +14,7 @@ const secret =
 // Dynamic baseURL config for Vercel (supports production + preview URLs)
 const baseURL = process.env.NODE_ENV === "production"
   ? {
-      protocol: "https",
+      protocol: "https" as const,
       allowedHosts: ["*.vercel.app"],
       fallback: "https://vio-azure.vercel.app",
     }
