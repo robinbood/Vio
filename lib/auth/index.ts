@@ -13,6 +13,10 @@ const secret =
 
 const baseURL = process.env.BETTER_AUTH_URL ?? process.env.NEXT_PUBLIC_APP_URL;
 
+const trustedOrigins = baseURL
+  ? [baseURL, "https://vio-azure.vercel.app"]
+  : ["https://vio-azure.vercel.app"];
+
 export const auth = betterAuth({
   appName: BRAND.auth.appName,
   baseURL,
@@ -84,7 +88,7 @@ export const auth = betterAuth({
   },
   advanced: {
     cookiePrefix: BRAND.cookiePrefix,
-    trustedOrigins: baseURL ? [baseURL, "https://vio-azure.vercel.app"] : undefined,
+    trustedOrigins,
   },
   plugins: [twoFactor(), nextCookies()],
 });
