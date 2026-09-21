@@ -6,21 +6,31 @@ import { db } from "@/lib/db";
 import { BRAND } from "@/lib/brand";
 import * as schema from "@/lib/db/schema";
 
-const secret =
-  process.env.BETTER_AUTH_SECRET ??
-  process.env.AUTH_SECRET ??
-  "dev-secret-please-change-in-production-min-32-chars";
+const isProduction = process.env.NODE_ENV === "production";
+const configuredSecret =
+  process.env.BETTER_AUTH_SECRET ?? process.env.AUTH_SECRET;
+const secret = configuredSecret ?? "vio-local-development-secret-change-me";
+const baseURL = process.env.BETTER_AUTH_URL ?? process.env.NEXT_PUBLIC_APP_URL;
+const isLocalBaseURL =
+  baseURL?.startsWith("http://localhost:") ||
+  baseURL?.startsWith("http://127.0.0.1:");
 
-// Dynamic baseURL config for Vercel (supports production + preview URLs)
-const baseURL = process.env.NODE_ENV === "production"
-  ? {
-      protocol: "https" as const,
-      allowedHosts: ["*.vercel.app"],
-      fallback: "https://vio-azure.vercel.app",
-    }
-  : process.env.BETTER_AUTH_URL ?? process.env.NEXT_PUBLIC_APP_URL;
+if (isProduction && (!configuredSecret || configuredSecret.length < 32)) {
+  throw new Error(
+    "BETTER_AUTH_SECRET must be configured with at least 32 characters in production"
+  );
+}
 
-const trustedOrigins = ["https://vio-azure.vercel.app", "https://*.vercel.app"];
+if (isProduction && (!baseURL || (!baseURL.startsWith("https://") && !isLocalBaseURL))) {
+  throw new Error("BETTER_AUTH_URL must be an HTTPS URL in production");
+}
+
+const trustedOrigins = [
+  baseURL,
+  ...(process.env.BETTER_AUTH_TRUSTED_ORIGINS?.split(",") ?? []),
+]
+  .map((origin) => origin?.trim())
+  .filter((origin): origin is string => Boolean(origin));
 
 export const auth = betterAuth({
   appName: BRAND.auth.appName,
@@ -41,6 +51,8 @@ export const auth = betterAuth({
     requireEmailVerification: process.env.NODE_ENV !== "production",
     minPasswordLength: 8,
     maxPasswordLength: 128,
+    resetPasswordTokenExpiresIn: 60 * 30,
+    revokeSessionsOnPasswordReset: true,
   },
   emailVerification: {
     sendOnSignUp: true,
@@ -89,12 +101,23 @@ export const auth = betterAuth({
     cookieCache: {
       enabled: true,
       maxAge: 60 * 5,
+      strategy: "compact",
     },
   },
+  rateLimit: {
+    enabled: true,
+    window: 10,
+    max: 100,
+    customRules: {
+      "/api/auth/sign-in/email": { window: 60, max: 5 },
+      "/api/auth/sign-up/email": { window: 60, max: 5 },
+    },
+  },
+  trustedOrigins,
   advanced: {
     cookiePrefix: BRAND.cookiePrefix,
-    trustedOrigins,
-    trustedProxyHeaders: true,
+    useSecureCookies: isProduction,
+    trustedProxyHeaders: false,
   },
   plugins: [twoFactor(), nextCookies()],
 });

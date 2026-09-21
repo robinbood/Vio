@@ -36,7 +36,11 @@ export function LoginForm() {
     },
   });
 
-  const callbackURL = searchParams.get("redirect") ?? "/boards";
+  const requestedRedirect = searchParams.get("redirect");
+  const callbackURL =
+    requestedRedirect?.startsWith("/") && !requestedRedirect.startsWith("//")
+      ? requestedRedirect
+      : "/boards";
 
   async function onSubmit(values: SignInInput) {
     setSubmitting(true);
@@ -45,7 +49,6 @@ export function LoginForm() {
         email: values.email,
         password: values.password,
         rememberMe: values.rememberMe,
-        callbackURL,
       });
       if (error) {
         toast.error("Login failed", {
@@ -54,6 +57,7 @@ export function LoginForm() {
         return;
       }
       toast.success("Welcome back");
+      router.replace(callbackURL);
     } finally {
       setSubmitting(false);
     }
