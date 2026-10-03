@@ -1,7 +1,6 @@
 "use client";
 
 import { useState } from "react";
-import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -9,7 +8,6 @@ import { Loader2 } from "lucide-react";
 import { authClient } from "@/lib/auth/client";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Checkbox } from "@/components/ui/checkbox";
 import {
   Form,
   FormControl,
@@ -19,14 +17,17 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { SsoButtons } from "@/components/auth/sso-buttons";
-import { signUpSchema, type SignUpInput } from "@/lib/validation/auth";
+import {
+  signUpSchema,
+  type SignUpFormInput,
+  type SignUpInput,
+} from "@/lib/validation/auth";
 import { toast } from "sonner";
 
 export function SignUpForm() {
-  const router = useRouter();
   const [submitting, setSubmitting] = useState(false);
 
-  const form = useForm<SignUpInput>({
+  const form = useForm<SignUpFormInput, unknown, SignUpInput>({
     resolver: zodResolver(signUpSchema),
     defaultValues: {
       email: "",
@@ -43,6 +44,8 @@ export function SignUpForm() {
         email: values.email,
         password: values.password,
         name: values.fullName,
+        fullName: values.fullName,
+        ...(values.username ? { username: values.username } : {}),
         callbackURL: "/boards",
       });
       if (error) {
@@ -50,20 +53,6 @@ export function SignUpForm() {
           description: error.message ?? "Please try again.",
         });
         return;
-      }
-      // Persist optional profile fields. We declared them in additionalFields.
-      if (values.username) {
-        // Session cookie may not be on the client yet right after sign-up;
-        // failure here is non-fatal — the account is created and the user
-        // can set the username later in account settings.
-        try {
-          await authClient.updateUser({
-            // @ts-expect-error username is in additionalFields
-            username: values.username,
-          });
-        } catch {
-          // ignore
-        }
       }
       toast.success("Welcome to Vio");
     } finally {

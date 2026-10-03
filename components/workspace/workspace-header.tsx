@@ -1,7 +1,6 @@
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Building2, Users, Settings } from "lucide-react";
-import { cn } from "@/lib/utils/cn";
 
 type WorkspaceHeaderProps = {
   workspace: {

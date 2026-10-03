@@ -1,4 +1,3 @@
-import Link from "next/link";
 import { redirect } from "next/navigation";
 import { db } from "@/lib/db";
 import { workspace, workspaceMember, user } from "@/lib/db/schema";

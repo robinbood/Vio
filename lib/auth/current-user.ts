@@ -44,7 +44,7 @@ export const getCurrentUser = cache(async (): Promise<CurrentUser | null> => {
     name: display,
     email: row.email,
     username: row.username,
-    initials: row.initials ?? initialsFromName(display),
+    initials: row.initials || initialsFromName(display),
     avatarColor: row.avatarColor ?? "#6d28d9",
   };
 });

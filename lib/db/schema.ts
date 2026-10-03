@@ -11,7 +11,7 @@ import {
   pgEnum,
   varchar,
 } from "drizzle-orm/pg-core";
-import { relations, sql } from "drizzle-orm";
+import { relations } from "drizzle-orm";
 
 export const boardVisibilityEnum = pgEnum("board_visibility", [
   "private",
@@ -294,8 +294,9 @@ export const apiToken = pgTable(
       .notNull()
       .references(() => user.id, { onDelete: "cascade" }),
     name: text("name").notNull(),
-    token: text("token").notNull().unique(),
-    apiKey: text("api_key").notNull(),
+    tokenHash: text("token_hash").notNull(),
+    apiKeyHash: text("api_key_hash").notNull(),
+    tokenHint: text("token_hint"),
     lastUsedAt: timestamp("last_used_at", { withTimezone: true }),
     expiresAt: timestamp("expires_at", { withTimezone: true }),
     createdAt: timestamp("created_at", { withTimezone: true })
@@ -303,7 +304,8 @@ export const apiToken = pgTable(
       .defaultNow(),
   },
   (t) => ({
-    tokenIdx: uniqueIndex("api_token_token_idx").on(t.token),
+    tokenHashIdx: uniqueIndex("api_token_token_hash_idx").on(t.tokenHash),
+    apiKeyHashIdx: index("api_token_api_key_hash_idx").on(t.apiKeyHash),
   })
 );
 

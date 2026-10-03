@@ -1,0 +1,27 @@
+{
+  "version": "7",
+  "dialect": "postgresql",
+  "entries": [
+    {
+      "idx": 0,
+      "version": "7",
+      "when": 1790968189414,
+      "tag": "0000_free_lady_deathstrike",
+      "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "7",
+      "when": 1790968274840,
+      "tag": "0001_fix_label_index_and_action_fk",
+      "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1790969444542,
+      "tag": "0002_hash_api_tokens",
+      "breakpoints": true
+    }
+  ]
+}

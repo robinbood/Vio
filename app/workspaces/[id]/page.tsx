@@ -1,11 +1,12 @@
 import Link from "next/link";
 import { redirect } from "next/navigation";
 import { db } from "@/lib/db";
-import { workspace, workspaceMember, board } from "@/lib/db/schema";
+import { workspace, workspaceMember } from "@/lib/db/schema";
 import { eq, and } from "drizzle-orm";
 import { getCurrentUser } from "@/lib/auth/current-user";
+import { listUserBoards } from "@/lib/data/boards";
 import { Button } from "@/components/ui/button";
-import { Plus, LayoutGrid, Users, Settings, Eye, EyeOff } from "lucide-react";
+import { Plus, LayoutGrid } from "lucide-react";
 import { WorkspaceHeader } from "@/components/workspace/workspace-header";
 
 export const metadata = {
@@ -37,10 +38,9 @@ export default async function WorkspaceDetailPage({
 
   if (!membership.length) redirect("/workspaces");
 
-  const boards = await db
-    .select()
-    .from(board)
-    .where(eq(board.workspaceId, id));
+  const boards = (await listUserBoards(user.id)).filter(
+    (visibleBoard) => visibleBoard.workspaceId === id
+  );
 
   return (
     <div className="mx-auto max-w-6xl p-6 sm:p-8">

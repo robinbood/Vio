@@ -1,7 +1,6 @@
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { VioLogo } from "@/components/brand/vio-logo";
-import { BRAND } from "@/lib/brand";
 
 export default function NotFound() {
   return (

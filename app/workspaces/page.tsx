@@ -5,7 +5,7 @@ import { workspace, workspaceMember } from "@/lib/db/schema";
 import { eq } from "drizzle-orm";
 import { getCurrentUser } from "@/lib/auth/current-user";
 import { Button } from "@/components/ui/button";
-import { Building2, Plus, Users, LayoutGrid } from "lucide-react";
+import { Building2, Plus } from "lucide-react";
 import { WorkspaceCard } from "@/components/workspace/workspace-card";
 
 export const metadata = {

@@ -1,7 +1,8 @@
 "use client";
 
 import Link from "next/link";
-import { LogOut, User, Activity, CreditCard, Settings, HelpCircle, LayoutDashboard } from "lucide-react";
+import { useRouter } from "next/navigation";
+import { LogOut, User, Activity, Settings, HelpCircle, LayoutDashboard } from "lucide-react";
 import { signOut } from "@/lib/auth/client";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
@@ -9,7 +10,6 @@ import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
-  DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
@@ -23,6 +23,8 @@ type Props = {
 };
 
 export function UserNav({ name, email, initials, avatarColor, username }: Props) {
+  const router = useRouter();
+
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
@@ -71,15 +73,17 @@ export function UserNav({ name, email, initials, avatarColor, username }: Props)
         </div>
         <DropdownMenuSeparator />
         <DropdownMenuItem asChild>
-          <Link href={username ? `/u/${username}` : "#"}>
+          <Link href={username ? `/u/${username}` : "/settings"}>
             <User className="h-4 w-4" /> Profile and visibility
           </Link>
         </DropdownMenuItem>
-        <DropdownMenuItem asChild>
-          <Link href={username ? `/u/${username}/activity` : "#"}>
-            <Activity className="h-4 w-4" /> Activity
-          </Link>
-        </DropdownMenuItem>
+        {username && (
+          <DropdownMenuItem asChild>
+            <Link href={`/u/${username}/activity`}>
+              <Activity className="h-4 w-4" /> Activity
+            </Link>
+          </DropdownMenuItem>
+        )}
         <DropdownMenuItem asChild>
           <Link href="/cards">
             <LayoutDashboard className="h-4 w-4" /> Cards
@@ -90,12 +94,6 @@ export function UserNav({ name, email, initials, avatarColor, username }: Props)
             <Settings className="h-4 w-4" /> Settings
           </Link>
         </DropdownMenuItem>
-        <DropdownMenuSeparator />
-        <DropdownMenuItem asChild>
-          <Link href="/billing">
-            <CreditCard className="h-4 w-4" /> Billing
-          </Link>
-        </DropdownMenuItem>
         <DropdownMenuItem asChild>
           <Link href="/help">
             <HelpCircle className="h-4 w-4" /> Help
@@ -103,7 +101,11 @@ export function UserNav({ name, email, initials, avatarColor, username }: Props)
         </DropdownMenuItem>
         <DropdownMenuSeparator />
         <DropdownMenuItem
-          onClick={() => signOut({ fetchOptions: { onSuccess: () => window.location.assign("/login") } })}
+          onClick={() =>
+            signOut({
+              fetchOptions: { onSuccess: () => router.replace("/login") },
+            })
+          }
         >
           <LogOut className="h-4 w-4" /> Log out
         </DropdownMenuItem>

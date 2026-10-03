@@ -7,10 +7,13 @@ const PUBLIC_PATHS = [
   "/forgot-password",
   "/reset-password",
   "/two-factor",
+  "/verify-email",
   "/privacy",
   "/api/auth",
   "/favicon.ico",
   "/sw.js",
+  "/robots.txt",
+  "/sitemap.xml",
 ];
 
 function matchesPath(pathname: string, path: string): boolean {
@@ -30,16 +33,38 @@ function hasSessionCookie(request: NextRequest): boolean {
   ].some((name) => request.cookies.has(name));
 }
 
+function isApiRoute(pathname: string): boolean {
+  return pathname.startsWith("/api/") || pathname.startsWith("/1/");
+}
+
 function proxy(request: NextRequest) {
   const { pathname, search } = request.nextUrl;
 
-  if (!hasSessionCookie(request) && !isPublicPath(pathname)) {
-    const loginURL = new URL("/login", request.url);
-    loginURL.searchParams.set("redirect", `${pathname}${search}`);
-    return NextResponse.redirect(loginURL);
+  if (isPublicPath(pathname)) {
+    return NextResponse.next();
   }
 
-  return NextResponse.next();
+  // Let API handlers return JSON errors and validate credentials themselves.
+  if (isApiRoute(pathname)) {
+    const authorization = request.headers.get("authorization") ?? "";
+    if (
+      authorization.startsWith("Basic ") ||
+      authorization.startsWith("Bearer ") ||
+      hasSessionCookie(request)
+    ) {
+      return NextResponse.next();
+    }
+    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+  }
+
+  // This is an optimistic redirect only; layouts still verify the session.
+  if (hasSessionCookie(request)) {
+    return NextResponse.next();
+  }
+
+  const loginURL = new URL("/login", request.url);
+  loginURL.searchParams.set("redirect", `${pathname}${search}`);
+  return NextResponse.redirect(loginURL);
 }
 
 export default proxy;

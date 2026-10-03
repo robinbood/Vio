@@ -85,14 +85,14 @@ export const auth = betterAuth({
   },
   user: {
     additionalFields: {
-      username: { type: "string", required: false },
-      fullName: { type: "string", required: false },
-      initials: { type: "string", required: false },
-      avatarColor: { type: "string", required: false },
-      bio: { type: "string", required: false },
-      locale: { type: "string", required: false },
-      timezone: { type: "string", required: false },
-      plan: { type: "string", required: false },
+      username: { type: "string", required: false, input: true },
+      fullName: { type: "string", required: false, input: true },
+      initials: { type: "string", required: false, input: true },
+      avatarColor: { type: "string", required: false, input: true },
+      bio: { type: "string", required: false, input: true },
+      locale: { type: "string", required: false, input: true },
+      timezone: { type: "string", required: false, input: true },
+      plan: { type: "string", required: false, input: false },
     },
   },
   session: {

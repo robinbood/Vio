@@ -7,6 +7,32 @@ type BoardBackgroundProps = {
   children?: React.ReactNode;
 };
 
+type BoardBackgroundColors = {
+  backgroundColor: string | null;
+  backgroundImage: string | null;
+};
+
+export function boardBackgroundStyle({
+  backgroundColor,
+  backgroundImage,
+}: BoardBackgroundColors): React.CSSProperties {
+  if (backgroundImage) {
+    const escapedImage = backgroundImage
+      .replaceAll("\\", "\\\\")
+      .replaceAll('"', '\\"')
+      .replace(/[\r\n\f]/g, "");
+
+    return {
+      backgroundColor: backgroundColor ?? "#0079bf",
+      backgroundImage: `url("${escapedImage}")`,
+      backgroundPosition: "center",
+      backgroundSize: "cover",
+    };
+  }
+
+  return { background: backgroundColor ?? "#0079bf" };
+}
+
 export function BoardBackground({
   background,
   className,

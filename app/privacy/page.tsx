@@ -7,11 +7,10 @@ import {
   Share2,
   Trash2,
   Mail,
-  Server,
   Settings,
 } from "lucide-react";
 import { VioLogo } from "@/components/brand/vio-logo";
-import { BRAND, BRAND_GRADIENT_TEXT, BRAND_COLORS, BRAND_GRADIENT } from "@/lib/brand";
+import { BRAND, BRAND_GRADIENT_TEXT, BRAND_GRADIENT } from "@/lib/brand";
 import { Button } from "@/components/ui/button";
 
 export const metadata: Metadata = {

@@ -4,7 +4,6 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import {
   Home,
-  Layout,
   Users,
   Zap,
   Star,
@@ -16,13 +15,21 @@ import { cn } from "@/lib/utils/cn";
 import { Separator } from "@/components/ui/separator";
 import { Button } from "@/components/ui/button";
 
+export type SidebarWorkspace = {
+  id: string;
+  name: string;
+  boardCount: number;
+};
+
+type AppSidebarProps = {
+  workspaces: SidebarWorkspace[];
+};
+
 const HOME_LINKS = [
   { href: "/boards", label: "Home", icon: Home, exact: true },
   { href: "/workspaces", label: "Workspaces", icon: Building2, exact: true },
   { href: "/notifications", label: "Notifications", icon: Clock, exact: false },
 ];
-
-const WORKSPACE_HEADERS: { id: string; name: string; boards: number }[] = [];
 
 const DISCOVERY = [
   { href: "/templates", label: "Templates", icon: BookOpen },
@@ -30,7 +37,7 @@ const DISCOVERY = [
   { href: "/power-ups", label: "Power-Ups directory", icon: Zap },
 ];
 
-export function AppSidebar() {
+export function AppSidebar({ workspaces }: AppSidebarProps) {
   const pathname = usePathname();
 
   return (
@@ -81,23 +88,16 @@ export function AppSidebar() {
             </Link>
           </Button>
         </div>
-        {WORKSPACE_HEADERS.map((ws) => (
+        {workspaces.map((ws) => (
           <div key={ws.id} className="flex flex-col gap-0.5">
-            <button
-              type="button"
+            <Link
+              href={`/workspaces/${ws.id}`}
               className="flex items-center gap-2 rounded-md px-2 py-1.5 font-medium text-foreground hover:bg-muted"
             >
               <Building2 className="h-4 w-4 text-muted-foreground" />
               {ws.name}
-            </button>
-            <Link
-              href={`/workspaces/${ws.id}/boards`}
-              className="ml-6 flex items-center gap-2 rounded-md px-2 py-1 text-muted-foreground hover:bg-muted hover:text-foreground"
-            >
-              <Layout className="h-3.5 w-3.5" />
-              Boards
               <span className="ml-auto text-xs text-muted-foreground">
-                {ws.boards}
+                {ws.boardCount}
               </span>
             </Link>
             <Link

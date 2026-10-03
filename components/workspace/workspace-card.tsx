@@ -1,7 +1,6 @@
 import Link from "next/link";
 import { Building2, LayoutGrid, Users, Shield } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
-import { cn } from "@/lib/utils/cn";
 
 type WorkspaceCardProps = {
   workspace: {

@@ -25,7 +25,6 @@ export function TwoFactorForm() {
     try {
       const { error } = await authClient.twoFactor.verifyTotp({
         code,
-        fetchOptions: { onSuccess: () => router.push("/boards") },
       });
       if (error) {
         toast.error("Verification failed", { description: error.message });
@@ -33,7 +32,6 @@ export function TwoFactorForm() {
       }
       toast.success("Verified");
       router.push("/boards");
-      router.refresh();
     } finally {
       setSubmitting(false);
     }

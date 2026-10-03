@@ -18,9 +18,13 @@ export const signUpSchema = z.object({
   email: emailSchema,
   password: passwordSchema,
   fullName: z.string().min(1, "Name is required").max(64),
-  username: usernameSchema.optional(),
+  username: z
+    .union([z.literal(""), usernameSchema])
+    .optional()
+    .transform((value) => value || undefined),
 });
-export type SignUpInput = z.infer<typeof signUpSchema>;
+export type SignUpFormInput = z.input<typeof signUpSchema>;
+export type SignUpInput = z.output<typeof signUpSchema>;
 
 export const signInSchema = z.object({
   email: z.string().min(1, "Enter your email or username"),
