@@ -1,8 +1,11 @@
 import Link from "next/link";
+import { getCurrentUser } from "@/lib/auth/current-user";
 import { Button } from "@/components/ui/button";
 import { VioLogo } from "@/components/brand/vio-logo";
 
-export default function NotFound() {
+export default async function NotFound() {
+  const user = await getCurrentUser();
+
   return (
     <div className="flex min-h-screen flex-col items-center justify-center bg-background p-6">
       <VioLogo className="text-4xl" withWordmark />
@@ -11,12 +14,15 @@ export default function NotFound() {
         The page you&apos;re looking for doesn&apos;t exist or has been moved.
       </p>
       <div className="mt-6 flex gap-3">
-        <Button asChild variant="vio">
-          <Link href="/boards">Go to boards</Link>
-        </Button>
-        <Button asChild variant="outline">
-          <Link href="/">Home</Link>
-        </Button>
+        {user ? (
+          <Button asChild variant="vio">
+            <Link href="/boards">Go to boards</Link>
+          </Button>
+        ) : (
+          <Button asChild variant="vio">
+            <Link href="/">Home</Link>
+          </Button>
+        )}
       </div>
     </div>
   );

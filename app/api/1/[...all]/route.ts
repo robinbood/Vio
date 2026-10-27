@@ -2,6 +2,11 @@ import { NextResponse } from "next/server";
 import { api } from "@/lib/api";
 import { findWorkspaceAccess } from "@/lib/data/workspaces";
 import { createBoardSchema } from "@/lib/validation/board";
+import {
+  getUnreadNotificationCount,
+  listNotifications,
+  parseNotificationCursor,
+} from "@/lib/data/notifications";
 import { z } from "zod";
 
 export async function GET(request: Request, { params }: { params: Promise<{ all: string[] }> }) {
@@ -13,6 +18,27 @@ export async function GET(request: Request, { params }: { params: Promise<{ all:
   const search = new URL(request.url).searchParams;
 
   switch (first) {
+    case "notifications": {
+      if (rest.length !== 0) {
+        return NextResponse.json({ error: "Not found" }, { status: 404 });
+      }
+      const before = search.get("before");
+      const cursor = parseNotificationCursor(before);
+      if (before && !cursor) {
+        return NextResponse.json(
+          { error: "Invalid notification cursor" },
+          { status: 400 }
+        );
+      }
+      const [page, unreadCount] = await Promise.all([
+        listNotifications(auth.user.id, cursor),
+        getUnreadNotificationCount(auth.user.id),
+      ]);
+      return NextResponse.json(
+        { ...page, unreadCount },
+        { headers: { "Cache-Control": "private, no-store" } }
+      );
+    }
     case "members":
       if (rest.length === 1 && rest[0] === "me") {
         return NextResponse.json({

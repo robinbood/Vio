@@ -1,0 +1,43 @@
+{
+  "version": 1,
+  "transactionId": "1791658911088012300-0",
+  "skills": {
+    "taste-skill": {
+      "source": {
+        "type": "remote",
+        "source": "leonxlnx/taste-skill/taste-skill",
+        "commit_sha": "3c7017d636c3a4aad378433ea6d0cfa6c921da4a",
+        "skill_path": "skills/taste-skill"
+      },
+      "sourceStatus": {
+        "type": "verified",
+        "artifact_id": "sha256:5b0bbdf6fe73544f2fb2efe4f51eec20b998c09a5ad09a2d893d353373ee27f3",
+        "content_sha256": "5b0bbdf6fe73544f2fb2efe4f51eec20b998c09a5ad09a2d893d353373ee27f3",
+        "installed_sha256": "ab504b9ccf307b13bd8b0de4c957ee679ba78190a48be07d5c3e34479887940a",
+        "attestation_key_id": "skilld-production-2026-08"
+      },
+      "targets": [
+        {
+          "agent": "codex",
+          "mode": "copy"
+        },
+        {
+          "agent": "github-copilot",
+          "mode": "copy"
+        },
+        {
+          "agent": "amp",
+          "mode": "copy"
+        },
+        {
+          "agent": "kilo",
+          "mode": "copy"
+        },
+        {
+          "agent": "zed",
+          "mode": "copy"
+        }
+      ]
+    }
+  }
+}

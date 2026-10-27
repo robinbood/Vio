@@ -714,6 +714,7 @@ export const notification = pgTable(
       onDelete: "set null",
     }),
     cardId: text("card_id").references(() => card.id, { onDelete: "set null" }),
+    dedupeKey: text("dedupe_key"),
     unread: boolean("unread").notNull().default(true),
     dateRead: timestamp("date_read", { withTimezone: true }),
     createdAt: timestamp("created_at", { withTimezone: true })
@@ -722,6 +723,18 @@ export const notification = pgTable(
   },
   (t) => ({
     userUnreadIdx: index("notification_user_unread_idx").on(t.userId, t.unread),
+    userCreatedIdx: index("notification_user_created_idx").on(
+      t.userId,
+      t.createdAt,
+      t.id
+    ),
+    actionRecipientTypeIdx: uniqueIndex(
+      "notification_action_user_type_idx"
+    ).on(t.actionId, t.userId, t.type),
+    userDedupeKeyIdx: uniqueIndex("notification_user_dedupe_key_idx").on(
+      t.userId,
+      t.dedupeKey
+    ),
   })
 );
 

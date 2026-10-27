@@ -22,6 +22,20 @@
       "when": 1790969444542,
       "tag": "0002_hash_api_tokens",
       "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "7",
+      "when": 1792003499188,
+      "tag": "0003_narrow_deadpool",
+      "breakpoints": true
+    },
+    {
+      "idx": 4,
+      "version": "7",
+      "when": 1792003845277,
+      "tag": "0004_puzzling_supreme_intelligence",
+      "breakpoints": true
     }
   ]
 }

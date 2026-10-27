@@ -11,6 +11,7 @@ import { MobileNavToggle } from "@/components/app/mobile-nav";
 import { Button } from "@/components/ui/button";
 import { listSidebarWorkspaces } from "@/lib/data/workspaces";
 import { Plus } from "lucide-react";
+import { getUnreadNotificationCount } from "@/lib/data/notifications";
 
 export default async function AppLayout({
   children,
@@ -20,6 +21,7 @@ export default async function AppLayout({
   const user = await getCurrentUser();
   if (!user) redirect("/login");
   const workspaces = await listSidebarWorkspaces(user.id);
+  const unreadNotificationCount = await getUnreadNotificationCount(user.id);
 
   return (
     <div className="grid min-h-screen grid-cols-1 grid-rows-[56px_1fr] bg-muted/30 md:grid-cols-[260px_minmax(0,1fr)]">
@@ -47,7 +49,7 @@ export default async function AppLayout({
               <span className="hidden sm:inline">Create</span>
             </Link>
           </Button>
-          <NotificationsBell />
+          <NotificationsBell initialCount={unreadNotificationCount} />
           <ThemeToggle />
           <UserNav
             name={user.name}

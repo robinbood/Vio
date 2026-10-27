@@ -16,6 +16,18 @@ bun dev
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
+## Notifications
+
+In-app notifications are stored per recipient and exposed through the
+authenticated `/api/notifications` endpoint and Trello-compatible
+`/1/notifications` API. To notify users for a new event, call
+`insertNotificationEvent(tx, event)` from `lib/data/notifications.ts` in the
+same database transaction as the action. Supply recipients, the actor,
+action/board/card references, and notification type; the helper deduplicates
+recipients, excludes the actor, and ignores duplicate action/recipient/type
+fan-out. Unread counts refresh in the app header every 30 seconds and when the
+browser regains focus.
+
 You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
 
 This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
