@@ -59,4 +59,9 @@ test("reloading an authenticated board does not start a document loop", async ({
   expect(documentRequests.filter((pathname) => pathname === "/boards")).toHaveLength(
     1
   );
+
+  for (const path of ["/", "/login", "/signup"]) {
+    await page.goto(`${base}${path}`);
+    await expect(page).toHaveURL(/\/boards$/);
+  }
 });

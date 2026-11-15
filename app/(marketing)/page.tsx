@@ -14,6 +14,8 @@ import { Button } from "@/components/ui/button";
 import { VioLogo } from "@/components/brand/vio-logo";
 import { BRAND, BRAND_GRADIENT, BRAND_GRADIENT_TEXT } from "@/lib/brand";
 import { KanbanPreview } from "@/components/marketing/kanban-preview";
+import { getCurrentUser } from "@/lib/auth/current-user";
+import { redirect } from "next/navigation";
 
 // Marketing landing page. Everything below the root layout is owned by
 // this page; the `(marketing)` route group is a thin pass-through.
@@ -46,7 +48,10 @@ const PROOFS = [
   { value: "99.99%", label: "uptime this quarter" },
 ];
 
-export default function HomePage() {
+export default async function HomePage() {
+  const user = await getCurrentUser();
+  if (user) redirect("/boards");
+
   return (
     <div className="flex min-h-screen flex-col bg-background">
       <SiteHeader />
