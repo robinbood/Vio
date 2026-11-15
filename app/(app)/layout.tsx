@@ -26,24 +26,24 @@ export default async function AppLayout({
   return (
     <div className="grid min-h-screen grid-cols-1 grid-rows-[56px_1fr] bg-muted/30 md:grid-cols-[260px_minmax(0,1fr)]">
       {/* Top-left brand cell */}
-      <header className="col-start-1 row-start-1 hidden h-14 items-center gap-2 border-b bg-background px-4 md:flex">
-        <Link href="/boards" aria-label="Home" className="text-xl">
+      <header className="col-start-1 row-start-1 hidden h-14 items-center border-b border-r bg-background px-5 md:flex">
+        <Link href="/boards" aria-label="Home" className="text-2xl">
           <VioLogo withWordmark />
         </Link>
       </header>
 
       {/* Top bar */}
-      <header className="col-start-1 row-start-1 flex h-14 min-w-0 items-center gap-3 border-b bg-background px-3 md:col-start-2 md:px-4">
+      <header className="col-start-1 row-start-1 flex h-14 min-w-0 items-center gap-3 border-b bg-background/95 px-3 shadow-sm backdrop-blur md:col-start-2 md:px-5">
         <MobileNavToggle workspaces={workspaces} />
         <Link href="/boards" aria-label="Home" className="text-lg md:hidden">
-          <VioLogo />
+          <VioLogo withWordmark />
         </Link>
         <GlobalSearch
-          className="hidden min-w-0 flex-1 sm:flex"
+          className="hidden min-w-0 max-w-xl flex-1 sm:flex"
           placeholder="Search boards, cards, members…"
         />
-        <div className="flex items-center gap-1">
-          <Button asChild variant="vio" size="sm" className="gap-1.5">
+        <div className="ml-auto flex shrink-0 items-center gap-1 border-l pl-2 sm:gap-1.5 sm:pl-3">
+          <Button asChild variant="vio" className="h-9 gap-1.5 px-3">
             <Link href="/boards/new">
               <Plus className="h-4 w-4" />
               <span className="hidden sm:inline">Create</span>

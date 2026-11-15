@@ -18,7 +18,7 @@ export function GlobalSearch({
       role="search"
       onSubmit={(e) => e.preventDefault()}
       className={cn(
-        "flex h-8 w-full max-w-sm items-center gap-2 rounded-md border bg-muted/40 px-3 text-sm",
+        "flex h-9 w-full max-w-sm items-center gap-2 rounded-md border bg-muted/40 px-3 text-sm",
         "focus-within:border-ring focus-within:bg-background focus-within:ring-2 focus-within:ring-ring/30",
         className
       )}
